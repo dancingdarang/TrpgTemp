@@ -8,10 +8,10 @@
 const CATEGORIES = [
   { id: "syndromes", label: "신드롬",       file: "data/syndromes.csv" },
   { id: "effects",   label: "이펙트",        file: "data/effects.csv" },
-  { id: "characters",label: "캐릭터 열람",   file: "data/characters.csv" },
   { id: "items",     label: "장비/아이템",   file: "data/items.csv" },
   { id: "npcs",      label: "이레귤러 도감", file: "data/npcs.csv" },
   { id: "rules",     label: "규칙 정리",     file: "data/rules.csv" },
+  { id: "characters",label: "캐릭터 열람",   file: "data/characters.csv" },
 ];
 
 const state = {
@@ -305,97 +305,130 @@ function renderEffectCards(filtered) {
   });
 }
 
+function buildCharPortraitEl(row, className) {
+  const wrap = document.createElement("div");
+  wrap.className = className;
+  const imgFile = (row["이미지"] || "").trim();
+  if (imgFile) {
+    const img = document.createElement("img");
+    img.src = CHAR_IMAGE_BASE + imgFile;
+    img.alt = row["이름"] || "";
+    img.onerror = () => {
+      wrap.classList.add(className + "-missing");
+      wrap.innerHTML = `<span>NO IMAGE</span>`;
+    };
+    wrap.appendChild(img);
+  } else {
+    wrap.classList.add(className + "-missing");
+    wrap.innerHTML = `<span>NO IMAGE</span>`;
+  }
+  return wrap;
+}
+
+function buildCharSheet(row) {
+  const card = document.createElement("article");
+  card.className = "char-card";
+
+  const top = document.createElement("div");
+  top.className = "char-top";
+
+  const portraitWrap = buildCharPortraitEl(row, "char-portrait");
+
+  const info = document.createElement("div");
+  info.className = "char-info";
+
+  const head = document.createElement("div");
+  head.className = "char-head";
+  head.innerHTML = `
+    <span class="char-name">${escapeHtml(row["이름"])}</span>
+    <span class="char-grade">${escapeHtml(row["등급"])}</span>
+  `;
+
+  const statPanel = document.createElement("div");
+  statPanel.className = "char-panel char-stat-panel";
+
+  const statGrid = document.createElement("div");
+  statGrid.className = "char-stat-grid";
+  CHAR_STAT_KEYS.forEach((key) => {
+    const box = document.createElement("div");
+    box.className = "char-stat";
+    box.innerHTML = `
+      <span class="char-stat-label">${key}</span>
+      <span class="char-stat-value">${escapeHtml(row[key] || "-")}</span>
+    `;
+    statGrid.appendChild(box);
+  });
+  statPanel.appendChild(statGrid);
+
+  info.appendChild(head);
+  info.appendChild(statPanel);
+
+  top.appendChild(portraitWrap);
+  top.appendChild(info);
+
+  const narrativePanel = document.createElement("div");
+  narrativePanel.className = "char-panel char-narrative-panel";
+
+  const narrative = document.createElement("div");
+  narrative.className = "char-narrative";
+  CHAR_NARRATIVE_KEYS.forEach((key) => {
+    const value = (row[key] || "").trim();
+    if (!value) return;
+    const block = document.createElement("div");
+    block.className = "char-block";
+    block.innerHTML = `<span class="char-block-label">${key}</span>`;
+    const p = document.createElement("p");
+    p.textContent = value;
+    block.appendChild(p);
+    narrative.appendChild(block);
+  });
+  narrativePanel.appendChild(narrative);
+
+  card.appendChild(top);
+  card.appendChild(narrativePanel);
+  return card;
+}
+
 function renderCharacterCards(filtered) {
   dataTable.hidden = true;
   entryList.hidden = false;
   entryList.innerHTML = "";
 
-  filtered.forEach((row) => {
-    const card = document.createElement("article");
-    card.className = "char-card";
+  const roster = document.createElement("div");
+  roster.className = "char-roster";
 
-    const top = document.createElement("div");
-    top.className = "char-top";
+  const detail = document.createElement("div");
+  detail.className = "char-detail";
 
-    const portraitWrap = document.createElement("div");
-    portraitWrap.className = "char-portrait";
-    const imgFile = (row["이미지"] || "").trim();
-    if (imgFile) {
-      const img = document.createElement("img");
-      img.src = CHAR_IMAGE_BASE + imgFile;
-      img.alt = row["이름"] || "";
-      img.onerror = () => {
-        portraitWrap.classList.add("char-portrait-missing");
-        portraitWrap.innerHTML = `<span>NO IMAGE</span>`;
-      };
-      portraitWrap.appendChild(img);
-    } else {
-      portraitWrap.classList.add("char-portrait-missing");
-      portraitWrap.innerHTML = `<span>NO IMAGE</span>`;
+  filtered.forEach((row, idx) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "char-roster-btn";
+
+    const thumb = buildCharPortraitEl(row, "char-roster-thumb");
+    const name = document.createElement("span");
+    name.className = "char-roster-name";
+    name.textContent = row["이름"] || "";
+
+    btn.appendChild(thumb);
+    btn.appendChild(name);
+
+    btn.addEventListener("click", () => {
+      [...roster.children].forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      detail.innerHTML = "";
+      detail.appendChild(buildCharSheet(row));
+    });
+
+    roster.appendChild(btn);
+    if (idx === 0) {
+      btn.classList.add("active");
+      detail.appendChild(buildCharSheet(row));
     }
-
-    const info = document.createElement("div");
-    info.className = "char-info";
-
-    const head = document.createElement("div");
-    head.className = "char-head";
-    head.innerHTML = `
-      <span class="char-name">${escapeHtml(row["이름"])}</span>
-      <span class="char-grade">${escapeHtml(row["등급"])}</span>
-    `;
-
-    const statPanel = document.createElement("div");
-    statPanel.className = "char-panel char-stat-panel";
-    const statLabel = document.createElement("span");
-    statLabel.className = "char-panel-label";
-    statLabel.textContent = "인적 사항";
-    statPanel.appendChild(statLabel);
-
-    const statGrid = document.createElement("div");
-    statGrid.className = "char-stat-grid";
-    CHAR_STAT_KEYS.forEach((key) => {
-      const box = document.createElement("div");
-      box.className = "char-stat";
-      box.innerHTML = `
-        <span class="char-stat-label">${key}</span>
-        <span class="char-stat-value">${escapeHtml(row[key] || "-")}</span>
-      `;
-      statGrid.appendChild(box);
-    });
-    statPanel.appendChild(statGrid);
-
-    info.appendChild(head);
-    info.appendChild(statPanel);
-
-    top.appendChild(portraitWrap);
-    top.appendChild(info);
-
-    const narrativePanel = document.createElement("div");
-    narrativePanel.className = "char-panel char-narrative-panel";
-    const narrativeLabel = document.createElement("span");
-    narrativeLabel.className = "char-panel-label";
-    narrativeLabel.textContent = "백스토리";
-    narrativePanel.appendChild(narrativeLabel);
-
-    const narrative = document.createElement("div");
-    narrative.className = "char-narrative";
-    CHAR_NARRATIVE_KEYS.forEach((key) => {
-      const value = (row[key] || "").trim();
-      if (!value) return;
-      const block = document.createElement("div");
-      block.className = "char-block";
-      block.innerHTML = `<span class="char-block-label">${key}</span>`;
-      const p = document.createElement("p");
-      p.textContent = value;
-      block.appendChild(p);
-      narrative.appendChild(block);
-    });
-    narrativePanel.appendChild(narrative);
-
-    card.appendChild(top);
-    card.appendChild(narrativePanel);
-    entryList.appendChild(card);
   });
+
+  entryList.appendChild(roster);
+  entryList.appendChild(detail);
 }
 
 searchInput.addEventListener("input", (e) => {

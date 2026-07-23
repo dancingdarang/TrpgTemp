@@ -592,6 +592,66 @@ tbody tr:hover { background: rgba(107,214,232,0.05); }
 }
 
 /* ---------- Character viewer cards (portrait + info panel layout) ---------- */
+.char-roster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.char-roster-btn {
+  appearance: none;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 6px 6px;
+  transition: border-color 0.15s, background 0.15s;
+}
+.char-roster-btn:hover { border-color: var(--cyan-dim); }
+.char-roster-btn.active {
+  border-color: var(--cyan);
+  background: var(--cyan-soft);
+}
+
+.char-roster-thumb {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.char-roster-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+.char-roster-thumb-missing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.char-roster-thumb-missing span {
+  font-family: var(--font-mono);
+  font-size: 6px;
+  color: var(--muted);
+}
+
+.char-roster-name {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+.char-roster-btn.active .char-roster-name { color: var(--cyan); }
+
 .char-card {
   border-bottom: 1px solid var(--border);
   padding: 22px 20px;
@@ -649,20 +709,20 @@ tbody tr:hover { background: rgba(107,214,232,0.05); }
 }
 .char-name {
   font-family: var(--font-body);
-  font-size: 30px;
+  font-size: 44px;
   font-weight: 700;
   color: var(--cyan);
   line-height: 1.1;
 }
 .char-grade {
   font-family: var(--font-mono);
-  font-size: 12.5px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: 1.5px;
   color: var(--cyan);
   border: 1px solid var(--cyan-dim);
   background: var(--cyan-soft);
-  padding: 5px 12px;
+  padding: 7px 14px;
   border-radius: 2px;
 }
 
@@ -672,14 +732,6 @@ tbody tr:hover { background: rgba(107,214,232,0.05); }
   border-radius: 2px;
   padding: 16px 18px;
   position: relative;
-}
-.char-panel-label {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 2px;
-  color: var(--label);
-  margin-bottom: 12px;
 }
 
 .char-stat-panel {
