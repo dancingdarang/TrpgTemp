@@ -8,6 +8,7 @@
 const CATEGORIES = [
   { id: "syndromes", label: "신드롬",       file: "data/syndromes.csv" },
   { id: "effects",   label: "이펙트",        file: "data/effects.csv" },
+  { id: "characters",label: "캐릭터 열람",   file: "data/characters.csv" },
   { id: "items",     label: "장비/아이템",   file: "data/items.csv" },
   { id: "npcs",      label: "이레귤러 도감", file: "data/npcs.csv" },
   { id: "rules",     label: "규칙 정리",     file: "data/rules.csv" },
@@ -39,6 +40,10 @@ const STAT_KEYS = ["육체", "감각", "정신", "사회"];
 const STAT_MAX = 3;
 
 const EFFECT_STAT_KEYS = ["최대레벨", "타이밍", "기능", "난이도", "대상", "사정거리", "침식치", "제한"];
+
+const CHAR_STAT_KEYS = ["등급", "워크스", "나이", "성별", "신장", "체중", "혈액형", "별자리"];
+const CHAR_NARRATIVE_KEYS = ["출생", "경험", "해후", "각성", "충동", "욕망"];
+const CHAR_IMAGE_BASE = "Image/Character/";
 
 function escapeHtml(str) {
   return String(str ?? "")
@@ -117,6 +122,10 @@ function render() {
   } else if (state.activeId === "effects") {
     expandControls.hidden = false;
     renderEffectCards(filtered);
+  } else if (state.activeId === "characters") {
+    chipFilter.hidden = true;
+    expandControls.hidden = true;
+    renderCharacterCards(filtered);
   } else {
     chipFilter.hidden = true;
     expandControls.hidden = true;
@@ -292,6 +301,82 @@ function renderEffectCards(filtered) {
 
     card.appendChild(head);
     card.appendChild(body);
+    entryList.appendChild(card);
+  });
+}
+
+function renderCharacterCards(filtered) {
+  dataTable.hidden = true;
+  entryList.hidden = false;
+  entryList.innerHTML = "";
+
+  filtered.forEach((row) => {
+    const card = document.createElement("article");
+    card.className = "char-card";
+
+    const portraitWrap = document.createElement("div");
+    portraitWrap.className = "char-portrait";
+    const imgFile = (row["이미지"] || "").trim();
+    if (imgFile) {
+      const img = document.createElement("img");
+      img.src = CHAR_IMAGE_BASE + imgFile;
+      img.alt = row["이름"] || "";
+      img.onerror = () => {
+        portraitWrap.classList.add("char-portrait-missing");
+        portraitWrap.innerHTML = `<span>NO IMAGE</span>`;
+      };
+      portraitWrap.appendChild(img);
+    } else {
+      portraitWrap.classList.add("char-portrait-missing");
+      portraitWrap.innerHTML = `<span>NO IMAGE</span>`;
+    }
+
+    const info = document.createElement("div");
+    info.className = "char-info";
+
+    const head = document.createElement("div");
+    head.className = "char-head";
+    head.innerHTML = `
+      <span class="char-name">${escapeHtml(row["이름"])}</span>
+      <span class="char-grade">${escapeHtml(row["등급"])}</span>
+    `;
+
+    const statGrid = document.createElement("div");
+    statGrid.className = "char-stat-grid";
+    CHAR_STAT_KEYS.forEach((key) => {
+      const box = document.createElement("div");
+      box.className = "char-stat";
+      box.innerHTML = `
+        <span class="char-stat-label">${key}</span>
+        <span class="char-stat-value">${escapeHtml(row[key] || "-")}</span>
+      `;
+      statGrid.appendChild(box);
+    });
+
+    info.appendChild(head);
+    info.appendChild(statGrid);
+
+    const top = document.createElement("div");
+    top.className = "char-top";
+    top.appendChild(portraitWrap);
+    top.appendChild(info);
+
+    const narrative = document.createElement("div");
+    narrative.className = "char-narrative";
+    CHAR_NARRATIVE_KEYS.forEach((key) => {
+      const value = (row[key] || "").trim();
+      if (!value) return;
+      const block = document.createElement("div");
+      block.className = "char-block";
+      block.innerHTML = `<span class="char-block-label">${key}</span>`;
+      const p = document.createElement("p");
+      p.textContent = value;
+      block.appendChild(p);
+      narrative.appendChild(block);
+    });
+
+    card.appendChild(top);
+    card.appendChild(narrative);
     entryList.appendChild(card);
   });
 }

@@ -21,6 +21,7 @@ GitHub Pages로 바로 올릴 수 있는 정적 사이트입니다.
 | `data/items.csv` | 장비/아이템 |
 | `data/npcs.csv` | 이레귤러 도감 |
 | `data/rules.csv` | 규칙 정리 |
+| `data/characters.csv` | 캐릭터 열람 (PC) |
 
 수정 방법:
 
@@ -30,6 +31,17 @@ GitHub Pages로 바로 올릴 수 있는 정적 사이트입니다.
 4. 저장한 파일을 GitHub 저장소에 다시 올리면(commit & push) 사이트가 바로 반영됩니다. 빌드나 배포 작업이 따로 필요 없습니다.
 
 > 지금 들어있는 데이터는 전부 "예시" 자리표시자입니다. 실제 룰북 데이터로 교체해서 쓰세요.
+
+## 2-1. 캐릭터 초상화 이미지 추가하기
+
+`data/characters.csv`의 `이미지` 열에 적은 파일명을, `Image/Character/` 폴더 안에 그 이름 그대로(대소문자까지 정확히) 넣어두면 캐릭터 열람 화면에 자동으로 표시됩니다.
+
+```
+Image/Character/Clara_Hart_Portrait.png
+```
+
+- 파일명이 비어있거나 해당 파일이 없으면 "NO IMAGE" 자리표시자가 대신 표시됩니다.
+- 이미지도 CSV와 마찬가지로 `push_all.bat`으로 올리면 반영됩니다 (용량이 크면 `push_data.bat`이 아니라 `push_all.bat`을 쓰세요 — `push_data.bat`은 `data/` 폴더만 올립니다).
 
 ## 3. 분류(탭) 추가/변경하기
 
