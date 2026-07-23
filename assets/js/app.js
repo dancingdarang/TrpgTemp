@@ -198,18 +198,9 @@ function renderSyndromeCards(filtered) {
     const card = document.createElement("article");
     card.className = "syn-card";
 
-    const head = document.createElement("button");
-    head.type = "button";
+    const head = document.createElement("div");
     head.className = "syn-head";
-    head.setAttribute("aria-expanded", "false");
-    head.innerHTML = `
-      <span class="syn-name">${escapeHtml(row["이름"])}</span>
-      <span class="syn-hint">능력치 보기</span>
-      <span class="syn-chevron" aria-hidden="true">▾</span>
-    `;
-
-    const body = document.createElement("div");
-    body.className = "syn-body";
+    head.innerHTML = `<span class="syn-name">${escapeHtml(row["이름"])}</span>`;
 
     const statGrid = document.createElement("div");
     statGrid.className = "stat-grid";
@@ -233,16 +224,9 @@ function renderSyndromeCards(filtered) {
     desc.className = "syn-desc";
     desc.textContent = row["효과요약"] ?? "";
 
-    body.appendChild(statGrid);
-    body.appendChild(desc);
-
-    head.addEventListener("click", () => {
-      const isOpen = card.classList.toggle("open");
-      head.setAttribute("aria-expanded", String(isOpen));
-    });
-
     card.appendChild(head);
-    card.appendChild(body);
+    card.appendChild(statGrid);
+    card.appendChild(desc);
     entryList.appendChild(card);
   });
 }
@@ -271,6 +255,9 @@ function renderEffectCards(filtered) {
     const body = document.createElement("div");
     body.className = "eff-body";
 
+    const bodyInner = document.createElement("div");
+    bodyInner.className = "eff-body-inner";
+
     const statGrid = document.createElement("div");
     statGrid.className = "eff-stat-grid";
     EFFECT_STAT_KEYS.forEach((key) => {
@@ -287,8 +274,9 @@ function renderEffectCards(filtered) {
     rules.className = "eff-rules";
     rules.textContent = row["효과"] ?? "";
 
-    body.appendChild(statGrid);
-    body.appendChild(rules);
+    bodyInner.appendChild(statGrid);
+    bodyInner.appendChild(rules);
+    body.appendChild(bodyInner);
 
     head.addEventListener("click", () => {
       const isOpen = card.classList.toggle("open");
