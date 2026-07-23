@@ -314,6 +314,9 @@ function renderCharacterCards(filtered) {
     const card = document.createElement("article");
     card.className = "char-card";
 
+    const hero = document.createElement("div");
+    hero.className = "char-hero";
+
     const portraitWrap = document.createElement("div");
     portraitWrap.className = "char-portrait";
     const imgFile = (row["이미지"] || "").trim();
@@ -331,16 +334,21 @@ function renderCharacterCards(filtered) {
       portraitWrap.innerHTML = `<span>NO IMAGE</span>`;
     }
 
-    const info = document.createElement("div");
-    info.className = "char-info";
-
-    const head = document.createElement("div");
-    head.className = "char-head";
-    head.innerHTML = `
+    const overlay = document.createElement("div");
+    overlay.className = "char-hero-overlay";
+    overlay.innerHTML = `
       <span class="char-eyebrow">SUBJECT FILE</span>
-      <span class="char-name">${escapeHtml(row["이름"])}</span>
-      <span class="char-grade">${escapeHtml(row["등급"])}</span>
+      <div class="char-hero-bottom">
+        <span class="char-name">${escapeHtml(row["이름"])}</span>
+        <span class="char-grade">${escapeHtml(row["등급"])}</span>
+      </div>
     `;
+
+    hero.appendChild(portraitWrap);
+    hero.appendChild(overlay);
+
+    const body = document.createElement("div");
+    body.className = "char-body";
 
     const statGrid = document.createElement("div");
     statGrid.className = "char-stat-grid";
@@ -354,16 +362,7 @@ function renderCharacterCards(filtered) {
       statGrid.appendChild(box);
     });
 
-    info.appendChild(head);
-    const statDivider = document.createElement("div");
-    statDivider.className = "char-divider";
-    info.appendChild(statDivider);
-    info.appendChild(statGrid);
-
-    const top = document.createElement("div");
-    top.className = "char-top";
-    top.appendChild(portraitWrap);
-    top.appendChild(info);
+    body.appendChild(statGrid);
 
     const narrative = document.createElement("div");
     narrative.className = "char-narrative";
@@ -382,9 +381,10 @@ function renderCharacterCards(filtered) {
       block.appendChild(p);
       narrative.appendChild(block);
     });
+    body.appendChild(narrative);
 
-    card.appendChild(top);
-    card.appendChild(narrative);
+    card.appendChild(hero);
+    card.appendChild(body);
     entryList.appendChild(card);
   });
 }
