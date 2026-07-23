@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OVER:EDGE — 더블 크로스 통합 DB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div class="crack-overlay" aria-hidden="true"></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40" width="40" height="40">
+          <line x1="6" y1="6" x2="34" y2="34" />
+          <line x1="34" y1="6" x2="6" y2="34" />
+        </svg>
+      </span>
+      <div class="brand-text">
+        <h1>OVER<span class="edge">:</span>EDGE</h1>
+        <p class="tagline">더블 크로스 통합 데이터베이스</p>
+      </div>
+    </div>
+    <div class="header-meta">
+      <span id="record-count" class="record-count">0건</span>
+    </div>
+  </div>
+
+  <nav class="tab-nav" id="tab-nav" aria-label="데이터 분류">
+    <!-- tabs injected by JS -->
+  </nav>
+</header>
+
+<main class="site-main">
+  <div class="toolbar">
+    <div class="search-wrap">
+      <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </svg>
+      <input type="text" id="search-input" placeholder="이름, 효과, 태그로 검색…" autocomplete="off">
+    </div>
+    <div class="status" id="status-line">불러오는 중…</div>
+  </div>
+
+  <section class="table-section" id="table-section">
+    <table id="data-table">
+      <thead id="table-head"></thead>
+      <tbody id="table-body"></tbody>
+    </table>
+    <p class="empty-state" id="empty-state" hidden>일치하는 항목이 없습니다.<br><span>검색어를 확인하거나 다른 분류를 선택해 보세요.</span></p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>데이터는 <code>/data/*.csv</code> 파일을 편집해 갱신합니다.</span>
+    <span class="x-divider" aria-hidden="true">×</span>
+    <span>더블 크로스 The Animation은 각 판권사의 상표입니다. 팬 제작 자료입니다.</span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
