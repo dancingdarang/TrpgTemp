@@ -454,6 +454,232 @@ tbody tr:hover td:first-child { text-shadow: 0 0 9px rgba(78,240,255,0.75); }
 }
 .empty-state span { font-size: 12px; opacity: 0.7; }
 
+/* ---------- Syndrome cards ---------- */
+.entry-list { display: flex; flex-direction: column; }
+
+.syn-card { border-bottom: 1px solid var(--border); }
+.syn-card:last-child { border-bottom: none; }
+
+.syn-head {
+  width: 100%;
+  appearance: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 16px 18px;
+  text-align: left;
+  color: var(--text);
+  transition: background 0.15s;
+}
+.syn-head:hover { background: rgba(78,240,255,0.05); }
+
+.syn-name {
+  font-family: var(--font-display);
+  font-size: 20px;
+  letter-spacing: 0.5px;
+  color: var(--cyan);
+  text-shadow: 0 0 8px rgba(78,240,255,0.5);
+}
+
+.syn-hint {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.4px;
+}
+
+.syn-chevron {
+  color: var(--cyan);
+  font-size: 13px;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+.syn-card.open .syn-chevron { transform: rotate(-180deg); }
+.syn-card.open .syn-hint { opacity: 0; }
+
+.syn-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.25s ease;
+}
+.syn-card.open .syn-body { grid-template-rows: 1fr; }
+.syn-body > * { overflow: hidden; }
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 4px 18px 16px;
+}
+
+.stat-top {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.stat-value { color: var(--cyan); font-weight: 700; }
+
+.stat-bar {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.stat-bar-fill {
+  height: 100%;
+  background: var(--cyan);
+  box-shadow: 0 0 6px rgba(78,240,255,0.7);
+}
+
+.syn-desc {
+  margin: 0;
+  padding: 0 18px 18px;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--text);
+}
+
+@media (max-width: 560px) {
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .syn-name { font-size: 17px; }
+}
+
+/* ---------- Chip filter (effects: syndrome quick filter) ---------- */
+.chip-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.chip {
+  appearance: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  padding: 6px 12px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.chip:hover { color: var(--text); border-color: var(--cyan-dim); }
+.chip.active {
+  color: var(--cyan);
+  border-color: var(--cyan-dim);
+  background: var(--cyan-soft);
+  text-shadow: 0 0 5px rgba(78,240,255,0.5);
+}
+
+/* ---------- Effect cards ---------- */
+.eff-card { border-bottom: 1px solid var(--border); }
+.eff-card:last-child { border-bottom: none; }
+
+.eff-head {
+  width: 100%;
+  appearance: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: block;
+  text-align: left;
+  padding: 14px 18px;
+  color: var(--text);
+  transition: background 0.15s;
+}
+.eff-head:hover { background: rgba(78,240,255,0.05); }
+
+.eff-head-top {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.eff-name {
+  font-family: var(--font-display);
+  font-size: 16.5px;
+  color: var(--cyan);
+  text-shadow: 0 0 6px rgba(78,240,255,0.45);
+}
+
+.eff-syn-tag {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+.eff-summary {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.eff-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.25s ease;
+}
+.eff-card.open .eff-body { grid-template-rows: 1fr; }
+.eff-body > * { overflow: hidden; }
+
+.eff-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 4px 18px 14px;
+}
+.eff-stat {
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 7px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.eff-stat-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.eff-stat-value {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--cyan);
+  font-weight: 600;
+}
+
+.eff-rules {
+  margin: 0 18px 18px;
+  padding: 12px 14px;
+  border-left: 2px solid var(--cyan-dim);
+  background: rgba(78,240,255,0.03);
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+@media (max-width: 640px) {
+  .eff-stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .eff-syn-tag { display: none; }
+}
+
 /* ---------- Footer ---------- */
 .site-footer { border-top: 1px solid var(--border); margin-top: 40px; }
 .footer-inner {
