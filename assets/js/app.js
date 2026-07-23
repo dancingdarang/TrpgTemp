@@ -337,6 +337,7 @@ function renderCharacterCards(filtered) {
     const head = document.createElement("div");
     head.className = "char-head";
     head.innerHTML = `
+      <span class="char-eyebrow">SUBJECT FILE</span>
       <span class="char-name">${escapeHtml(row["이름"])}</span>
       <span class="char-grade">${escapeHtml(row["등급"])}</span>
     `;
@@ -354,6 +355,9 @@ function renderCharacterCards(filtered) {
     });
 
     info.appendChild(head);
+    const statDivider = document.createElement("div");
+    statDivider.className = "char-divider";
+    info.appendChild(statDivider);
     info.appendChild(statGrid);
 
     const top = document.createElement("div");
@@ -363,6 +367,10 @@ function renderCharacterCards(filtered) {
 
     const narrative = document.createElement("div");
     narrative.className = "char-narrative";
+    const narrativeEyebrow = document.createElement("span");
+    narrativeEyebrow.className = "char-eyebrow char-eyebrow-notes";
+    narrativeEyebrow.textContent = "CASE NOTES";
+    narrative.appendChild(narrativeEyebrow);
     CHAR_NARRATIVE_KEYS.forEach((key) => {
       const value = (row[key] || "").trim();
       if (!value) return;
