@@ -27,6 +27,9 @@ const tableBody = document.getElementById("table-body");
 const dataTable = document.getElementById("data-table");
 const entryList = document.getElementById("entry-list");
 const chipFilter = document.getElementById("chip-filter");
+const expandControls = document.getElementById("expand-controls");
+const expandAllBtn = document.getElementById("expand-all-btn");
+const collapseAllBtn = document.getElementById("collapse-all-btn");
 const emptyState = document.getElementById("empty-state");
 const statusLine = document.getElementById("status-line");
 const recordCount = document.getElementById("record-count");
@@ -109,11 +112,14 @@ function render() {
 
   if (state.activeId === "syndromes") {
     chipFilter.hidden = true;
+    expandControls.hidden = true;
     renderSyndromeCards(filtered);
   } else if (state.activeId === "effects") {
+    expandControls.hidden = false;
     renderEffectCards(filtered);
   } else {
     chipFilter.hidden = true;
+    expandControls.hidden = true;
     renderTable(filtered);
   }
 
@@ -292,6 +298,20 @@ function renderEffectCards(filtered) {
 searchInput.addEventListener("input", (e) => {
   state.query = e.target.value;
   render();
+});
+
+expandAllBtn.addEventListener("click", () => {
+  document.querySelectorAll(".eff-card").forEach((card) => {
+    card.classList.add("open");
+    card.querySelector(".eff-head")?.setAttribute("aria-expanded", "true");
+  });
+});
+
+collapseAllBtn.addEventListener("click", () => {
+  document.querySelectorAll(".eff-card").forEach((card) => {
+    card.classList.remove("open");
+    card.querySelector(".eff-head")?.setAttribute("aria-expanded", "false");
+  });
 });
 
 buildTabs();
