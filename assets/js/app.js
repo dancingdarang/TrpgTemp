@@ -173,6 +173,7 @@ function updateChipActive() {
 function renderTable(filtered) {
   dataTable.hidden = false;
   entryList.hidden = true;
+  entryList.innerHTML = "";
 
   tableHead.innerHTML = "";
   const trh = document.createElement("tr");

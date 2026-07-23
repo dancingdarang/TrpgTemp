@@ -454,6 +454,7 @@ tbody tr:hover { background: rgba(107,214,232,0.05); }
 
 /* ---------- Syndrome cards ---------- */
 .entry-list { display: flex; flex-direction: column; }
+.entry-list[hidden] { display: none; }
 
 .syn-card { border-bottom: 1px solid var(--border); padding-bottom: 4px; }
 .syn-card:last-child { border-bottom: none; }
