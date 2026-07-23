@@ -1,18 +1,18 @@
 // ---------------------------------------------------------------
-// 인트로 시퀀스: 보안 파일 접속 연출 + 인장 클릭 시 본문 진입
+// 인트로 시퀀스: 터미널 로그 연출 + 버튼 클릭 시 본문 진입
 // ---------------------------------------------------------------
 
 const BOOT_LINES = [
-  "SYSTEM://OVER-EDGE ARCHIVE",
-  "암호화 파일 인덱스 로드 중...",
-  "생체 반응 스캔...",
-  "보안 등급 대조 중...",
-  "열람 권한 확인 완료",
+  "INCOMING CONNECTION DETECTED...",
+  "RESOLVING ARCHIVE SIGNATURE...",
+  "EXTERNAL USER IDENTIFIED: OVER:EDGE_ARCHIVE",
+  "LOADING INDEX... [ SYNDROMES / EFFECTS / ITEMS ]",
+  "SYSTEM LOCK BYPASSED...",
+  "READY.",
 ];
 
 const introEl = document.getElementById("intro");
 const logEl = document.getElementById("intro-log");
-const hintEl = document.getElementById("intro-hint");
 const sealBtn = document.getElementById("seal-btn");
 const appRoot = document.getElementById("app-root");
 
@@ -37,36 +37,26 @@ function typeLine(text, delay) {
 
 async function runBootSequence() {
   for (const line of BOOT_LINES) {
-    await typeLine(line, 180);
+    await typeLine(line, 150);
   }
-  hintEl.textContent = "ACCESS 버튼을 눌러 신원 인증을 시작하십시오";
+  sealBtn.disabled = false;
   sealBtn.focus();
 }
 
 function enterSite() {
   if (sealBtn.disabled) return;
   sealBtn.disabled = true;
-  sealBtn.classList.add("seal-scanning");
-  hintEl.textContent = "신원 대조 중...";
-
-  setTimeout(() => {
-    sealBtn.classList.add("seal-verified");
-    hintEl.textContent = "접근 허가 승인";
-  }, 650);
+  sealBtn.textContent = "ACCESSING...";
+  sealBtn.classList.add("term-btn-active");
 
   setTimeout(() => {
     introEl.classList.add("intro-hidden");
     appRoot.removeAttribute("aria-hidden");
     appRoot.classList.add("app-visible");
-  }, 1150);
+  }, 700);
 }
 
+sealBtn.disabled = true;
 sealBtn.addEventListener("click", enterSite);
-sealBtn.addEventListener("keydown", (e) => {
-  if (e.key === "Enter" || e.key === " ") {
-    e.preventDefault();
-    enterSite();
-  }
-});
 
 runBootSequence();

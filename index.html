@@ -11,58 +11,26 @@
 </head>
 <body>
 
-<div class="scanlines" aria-hidden="true"></div>
 <div class="crack-overlay" aria-hidden="true"></div>
 
 <!-- ===================== 인트로 : 보안 파일 접속 화면 ===================== -->
 <section id="intro" class="intro">
-  <div class="intro-inner">
-    <div class="intro-log" id="intro-log" aria-live="polite"></div>
+  <div class="term-panel">
+    <div class="term-header">
+      <span class="term-icon" aria-hidden="true">V</span>
+      <span class="term-title">OVEREDGE_NET_CORE</span>
+      <span class="term-status-dot" aria-hidden="true"></span>
+    </div>
+    <div class="term-divider"></div>
 
-    <button id="seal-btn" class="seal-btn" type="button" aria-label="신원 인증 후 파일 시스템 접속">
-      <svg class="seal-svg" viewBox="0 0 240 240" aria-hidden="true">
-        <defs>
-          <clipPath id="scanClip">
-            <rect x="24" y="24" width="192" height="192" rx="4" />
-          </clipPath>
-        </defs>
+    <div class="term-log" id="intro-log" aria-live="polite"></div>
 
-        <!-- HUD 코너 브라켓 -->
-        <g class="seal-brackets">
-          <path d="M 28 4 L 4 4 L 4 28" />
-          <path d="M 212 4 L 236 4 L 236 28" />
-          <path d="M 28 236 L 4 236 L 4 212" />
-          <path d="M 212 236 L 236 236 L 236 212" />
-        </g>
+    <div class="term-footer-row">
+      <span>AUTH_ID: <span class="term-value">GUEST</span></span>
+      <span>KEY: <span class="term-value">••••-••••</span></span>
+    </div>
 
-        <!-- 파일 프레임 -->
-        <rect class="seal-frame" x="24" y="24" width="192" height="192" rx="4" />
-
-        <!-- 기밀 스탬프 -->
-        <g class="seal-stamp" transform="rotate(-16 178 54)">
-          <rect x="140" y="40" width="76" height="26" rx="2" />
-          <text x="178" y="58" text-anchor="middle">CLASSIFIED</text>
-        </g>
-
-        <!-- 신분증 픽토그램 -->
-        <g class="seal-idcard">
-          <rect x="74" y="90" width="92" height="60" rx="6" />
-          <rect class="seal-idcard-photo" x="86" y="102" width="22" height="22" rx="2" />
-          <line x1="116" y1="108" x2="158" y2="108" />
-          <line x1="116" y1="120" x2="150" y2="120" />
-          <line x1="116" y1="132" x2="140" y2="132" />
-        </g>
-
-        <!-- 인증 완료 체크 -->
-        <path class="seal-check" d="M 96 122 L 114 140 L 148 100" />
-
-        <!-- 스캔 라인 -->
-        <rect class="seal-scanline" x="24" y="24" width="192" height="5" clip-path="url(#scanClip)" />
-      </svg>
-      <span class="seal-label">ACCESS</span>
-    </button>
-
-    <p class="intro-hint" id="intro-hint">SEQUENCE 실행 중…</p>
+    <button id="seal-btn" class="term-btn" type="button">ACCESS</button>
   </div>
 </section>
 
