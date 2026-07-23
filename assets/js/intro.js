@@ -39,20 +39,26 @@ async function runBootSequence() {
   for (const line of BOOT_LINES) {
     await typeLine(line, 180);
   }
-  hintEl.textContent = "인장을 클릭해 파일 시스템에 접속하십시오";
+  hintEl.textContent = "ACCESS 버튼을 눌러 신원 인증을 시작하십시오";
   sealBtn.focus();
 }
 
 function enterSite() {
-  sealBtn.classList.add("seal-activated");
+  if (sealBtn.disabled) return;
   sealBtn.disabled = true;
-  hintEl.textContent = "접속 중...";
+  sealBtn.classList.add("seal-scanning");
+  hintEl.textContent = "신원 대조 중...";
+
+  setTimeout(() => {
+    sealBtn.classList.add("seal-verified");
+    hintEl.textContent = "접근 허가 승인";
+  }, 650);
 
   setTimeout(() => {
     introEl.classList.add("intro-hidden");
     appRoot.removeAttribute("aria-hidden");
     appRoot.classList.add("app-visible");
-  }, 550);
+  }, 1150);
 }
 
 sealBtn.addEventListener("click", enterSite);
