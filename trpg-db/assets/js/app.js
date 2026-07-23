@@ -18,6 +18,7 @@ const state = {
   rows: [],
   headers: [],
   query: "",
+  synFilter: null,
 };
 
 const tabNav = document.getElementById("tab-nav");
@@ -25,6 +26,7 @@ const tableHead = document.getElementById("table-head");
 const tableBody = document.getElementById("table-body");
 const dataTable = document.getElementById("data-table");
 const entryList = document.getElementById("entry-list");
+const chipFilter = document.getElementById("chip-filter");
 const emptyState = document.getElementById("empty-state");
 const statusLine = document.getElementById("status-line");
 const recordCount = document.getElementById("record-count");
@@ -32,6 +34,15 @@ const searchInput = document.getElementById("search-input");
 
 const STAT_KEYS = ["육체", "감각", "정신", "사회"];
 const STAT_MAX = 3;
+
+const EFFECT_STAT_KEYS = ["최대레벨", "타이밍", "기능", "난이도", "대상", "사정거리", "침식치", "제한"];
+
+function escapeHtml(str) {
+  return String(str ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
 
 function buildTabs() {
   tabNav.innerHTML = "";
@@ -53,6 +64,7 @@ function switchCategory(id) {
   });
   searchInput.value = "";
   state.query = "";
+  state.synFilter = null;
   loadCategory(id);
 }
 
@@ -70,6 +82,7 @@ function loadCategory(id) {
     complete: (results) => {
       state.rows = results.data;
       state.headers = results.meta.fields || [];
+      buildChipFilter();
       render();
       statusLine.textContent = cat.file;
     },
@@ -84,20 +97,71 @@ function loadCategory(id) {
 
 function render() {
   const q = state.query.trim().toLowerCase();
-  const filtered = q
+  let filtered = q
     ? state.rows.filter((row) =>
         Object.values(row).some((v) => String(v).toLowerCase().includes(q))
       )
     : state.rows;
 
+  if (state.activeId === "effects" && state.synFilter) {
+    filtered = filtered.filter((row) => row["신드롬"] === state.synFilter);
+  }
+
   if (state.activeId === "syndromes") {
+    chipFilter.hidden = true;
     renderSyndromeCards(filtered);
+  } else if (state.activeId === "effects") {
+    renderEffectCards(filtered);
   } else {
+    chipFilter.hidden = true;
     renderTable(filtered);
   }
 
   emptyState.hidden = filtered.length !== 0;
   recordCount.textContent = `${filtered.length} FILES`;
+}
+
+function buildChipFilter() {
+  if (state.activeId !== "effects") {
+    chipFilter.hidden = true;
+    chipFilter.innerHTML = "";
+    return;
+  }
+  const names = [...new Set(state.rows.map((r) => r["신드롬"]).filter(Boolean))];
+  chipFilter.innerHTML = "";
+  chipFilter.hidden = names.length === 0;
+
+  const allBtn = document.createElement("button");
+  allBtn.type = "button";
+  allBtn.className = "chip" + (state.synFilter === null ? " active" : "");
+  allBtn.textContent = "전체";
+  allBtn.addEventListener("click", () => {
+    state.synFilter = null;
+    updateChipActive();
+    render();
+  });
+  chipFilter.appendChild(allBtn);
+
+  names.forEach((name) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "chip" + (state.synFilter === name ? " active" : "");
+    btn.textContent = name;
+    btn.dataset.name = name;
+    btn.addEventListener("click", () => {
+      state.synFilter = state.synFilter === name ? null : name;
+      updateChipActive();
+      render();
+    });
+    chipFilter.appendChild(btn);
+  });
+}
+
+function updateChipActive() {
+  [...chipFilter.children].forEach((btn) => {
+    const isAll = !btn.dataset.name;
+    btn.classList.toggle("active", isAll ? state.synFilter === null : btn.dataset.name === state.synFilter);
+  });
 }
 
 function renderTable(filtered) {
@@ -139,7 +203,7 @@ function renderSyndromeCards(filtered) {
     head.className = "syn-head";
     head.setAttribute("aria-expanded", "false");
     head.innerHTML = `
-      <span class="syn-name">${row["이름"] ?? ""}</span>
+      <span class="syn-name">${escapeHtml(row["이름"])}</span>
       <span class="syn-hint">능력치 보기</span>
       <span class="syn-chevron" aria-hidden="true">▾</span>
     `;
@@ -171,6 +235,60 @@ function renderSyndromeCards(filtered) {
 
     body.appendChild(statGrid);
     body.appendChild(desc);
+
+    head.addEventListener("click", () => {
+      const isOpen = card.classList.toggle("open");
+      head.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    card.appendChild(head);
+    card.appendChild(body);
+    entryList.appendChild(card);
+  });
+}
+
+function renderEffectCards(filtered) {
+  dataTable.hidden = true;
+  entryList.hidden = false;
+  entryList.innerHTML = "";
+
+  filtered.forEach((row) => {
+    const card = document.createElement("article");
+    card.className = "eff-card";
+
+    const head = document.createElement("button");
+    head.type = "button";
+    head.className = "eff-head";
+    head.setAttribute("aria-expanded", "false");
+    head.innerHTML = `
+      <div class="eff-head-top">
+        <span class="eff-name">${escapeHtml(row["이름"])}</span>
+        <span class="eff-syn-tag">${escapeHtml(row["신드롬"])}</span>
+      </div>
+      <p class="eff-summary">${escapeHtml(row["요약"])}</p>
+    `;
+
+    const body = document.createElement("div");
+    body.className = "eff-body";
+
+    const statGrid = document.createElement("div");
+    statGrid.className = "eff-stat-grid";
+    EFFECT_STAT_KEYS.forEach((key) => {
+      const box = document.createElement("div");
+      box.className = "eff-stat";
+      box.innerHTML = `
+        <span class="eff-stat-label">${key}</span>
+        <span class="eff-stat-value">${escapeHtml(row[key] || "-")}</span>
+      `;
+      statGrid.appendChild(box);
+    });
+
+    const rules = document.createElement("p");
+    rules.className = "eff-rules";
+    rules.textContent = row["효과"] ?? "";
+
+    body.appendChild(statGrid);
+    body.appendChild(rules);
 
     head.addEventListener("click", () => {
       const isOpen = card.classList.toggle("open");
