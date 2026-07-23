@@ -463,9 +463,9 @@ tbody tr:hover { background: rgba(107,214,232,0.05); }
 }
 
 .syn-name {
-  font-family: var(--font-display);
-  font-size: 21px;
-  letter-spacing: 0.5px;
+  font-family: var(--font-body);
+  font-size: 19px;
+  letter-spacing: 0.3px;
   color: var(--cyan);
   font-weight: 700;
 }
@@ -563,8 +563,8 @@ tbody tr:hover { background: rgba(107,214,232,0.05); }
 }
 
 .eff-name {
-  font-family: var(--font-display);
-  font-size: 16.5px;
+  font-family: var(--font-body);
+  font-size: 15.5px;
   color: var(--cyan);
   font-weight: 700;
 }
