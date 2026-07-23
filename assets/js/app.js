@@ -314,8 +314,8 @@ function renderCharacterCards(filtered) {
     const card = document.createElement("article");
     card.className = "char-card";
 
-    const hero = document.createElement("div");
-    hero.className = "char-hero";
+    const top = document.createElement("div");
+    top.className = "char-top";
 
     const portraitWrap = document.createElement("div");
     portraitWrap.className = "char-portrait";
@@ -334,21 +334,22 @@ function renderCharacterCards(filtered) {
       portraitWrap.innerHTML = `<span>NO IMAGE</span>`;
     }
 
-    const overlay = document.createElement("div");
-    overlay.className = "char-hero-overlay";
-    overlay.innerHTML = `
-      <span class="char-eyebrow">SUBJECT FILE</span>
-      <div class="char-hero-bottom">
-        <span class="char-name">${escapeHtml(row["이름"])}</span>
-        <span class="char-grade">${escapeHtml(row["등급"])}</span>
-      </div>
+    const info = document.createElement("div");
+    info.className = "char-info";
+
+    const head = document.createElement("div");
+    head.className = "char-head";
+    head.innerHTML = `
+      <span class="char-name">${escapeHtml(row["이름"])}</span>
+      <span class="char-grade">${escapeHtml(row["등급"])}</span>
     `;
 
-    hero.appendChild(portraitWrap);
-    hero.appendChild(overlay);
-
-    const body = document.createElement("div");
-    body.className = "char-body";
+    const statPanel = document.createElement("div");
+    statPanel.className = "char-panel char-stat-panel";
+    const statLabel = document.createElement("span");
+    statLabel.className = "char-panel-label";
+    statLabel.textContent = "인적 사항";
+    statPanel.appendChild(statLabel);
 
     const statGrid = document.createElement("div");
     statGrid.className = "char-stat-grid";
@@ -361,15 +362,23 @@ function renderCharacterCards(filtered) {
       `;
       statGrid.appendChild(box);
     });
+    statPanel.appendChild(statGrid);
 
-    body.appendChild(statGrid);
+    info.appendChild(head);
+    info.appendChild(statPanel);
+
+    top.appendChild(portraitWrap);
+    top.appendChild(info);
+
+    const narrativePanel = document.createElement("div");
+    narrativePanel.className = "char-panel char-narrative-panel";
+    const narrativeLabel = document.createElement("span");
+    narrativeLabel.className = "char-panel-label";
+    narrativeLabel.textContent = "백스토리";
+    narrativePanel.appendChild(narrativeLabel);
 
     const narrative = document.createElement("div");
     narrative.className = "char-narrative";
-    const narrativeEyebrow = document.createElement("span");
-    narrativeEyebrow.className = "char-eyebrow char-eyebrow-notes";
-    narrativeEyebrow.textContent = "CASE NOTES";
-    narrative.appendChild(narrativeEyebrow);
     CHAR_NARRATIVE_KEYS.forEach((key) => {
       const value = (row[key] || "").trim();
       if (!value) return;
@@ -381,10 +390,10 @@ function renderCharacterCards(filtered) {
       block.appendChild(p);
       narrative.appendChild(block);
     });
-    body.appendChild(narrative);
+    narrativePanel.appendChild(narrative);
 
-    card.appendChild(hero);
-    card.appendChild(body);
+    card.appendChild(top);
+    card.appendChild(narrativePanel);
     entryList.appendChild(card);
   });
 }
