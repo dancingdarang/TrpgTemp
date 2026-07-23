@@ -71,7 +71,7 @@ function loadCategory(id) {
     error: () => {
       statusLine.textContent = `${cat.file} 을(를) 불러오지 못했습니다.`;
       tableBody.innerHTML = "";
-      recordCount.textContent = "0건";
+      recordCount.textContent = "0 FILES";
       emptyState.hidden = false;
     },
   });
@@ -108,7 +108,7 @@ function render() {
   });
 
   emptyState.hidden = filtered.length !== 0;
-  recordCount.textContent = `${filtered.length}건`;
+  recordCount.textContent = `${filtered.length} FILES`;
 }
 
 searchInput.addEventListener("input", (e) => {

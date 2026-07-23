@@ -6,29 +6,55 @@
 <title>OVER:EDGE — 더블 크로스 통합 DB</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Nanum+Gothic+Coding:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
+<div class="scanlines" aria-hidden="true"></div>
 <div class="crack-overlay" aria-hidden="true"></div>
+
+<!-- ===================== 인트로 : 보안 파일 접속 화면 ===================== -->
+<section id="intro" class="intro">
+  <div class="intro-inner">
+    <div class="intro-log" id="intro-log" aria-live="polite"></div>
+
+    <button id="seal-btn" class="seal-btn" type="button" aria-label="인장을 눌러 파일 시스템에 접속">
+      <svg class="seal-svg" viewBox="0 0 220 220" aria-hidden="true">
+        <circle class="seal-ring-outer" cx="110" cy="110" r="98" />
+        <circle class="seal-ring-ticks" cx="110" cy="110" r="86" />
+        <circle class="seal-ring-inner" cx="110" cy="110" r="70" />
+        <line class="seal-cross" x1="68" y1="68" x2="152" y2="152" />
+        <line class="seal-cross" x1="152" y1="68" x2="68" y2="152" />
+      </svg>
+      <span class="seal-label">진입</span>
+    </button>
+
+    <p class="intro-hint" id="intro-hint">SEQUENCE 실행 중…</p>
+  </div>
+</section>
+
+<!-- ===================== 메인 : DB 파일 브라우저 ===================== -->
+<div id="app-root" class="app-root" aria-hidden="true">
 
 <header class="site-header">
   <div class="header-inner">
     <div class="brand">
       <span class="brand-mark" aria-hidden="true">
         <svg viewBox="0 0 40 40" width="40" height="40">
-          <line x1="6" y1="6" x2="34" y2="34" />
-          <line x1="34" y1="6" x2="6" y2="34" />
+          <circle cx="20" cy="20" r="17" />
+          <line x1="9" y1="9" x2="31" y2="31" />
+          <line x1="31" y1="9" x2="9" y2="31" />
         </svg>
       </span>
       <div class="brand-text">
         <h1>OVER<span class="edge">:</span>EDGE</h1>
-        <p class="tagline">더블 크로스 통합 데이터베이스</p>
+        <p class="tagline">// ARCHIVE_ACCESS :: 더블 크로스 통합 데이터베이스</p>
       </div>
     </div>
     <div class="header-meta">
-      <span id="record-count" class="record-count">0건</span>
+      <span class="pulse-dot" aria-hidden="true"></span>
+      <span id="record-count" class="record-count">0 FILES</span>
     </div>
   </div>
 
@@ -40,10 +66,7 @@
 <main class="site-main">
   <div class="toolbar">
     <div class="search-wrap">
-      <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-        <circle cx="11" cy="11" r="7" />
-        <line x1="21" y1="21" x2="16.65" y2="16.65" />
-      </svg>
+      <span class="prompt-caret" aria-hidden="true">&gt;</span>
       <input type="text" id="search-input" placeholder="이름, 효과, 태그로 검색…" autocomplete="off">
     </div>
     <div class="status" id="status-line">불러오는 중…</div>
@@ -66,7 +89,10 @@
   </div>
 </footer>
 
+</div><!-- /#app-root -->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="assets/js/app.js"></script>
+<script src="assets/js/intro.js"></script>
 </body>
 </html>
