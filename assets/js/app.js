@@ -52,7 +52,7 @@ const STAT_MAX = 3;
 
 const EFFECT_STAT_KEYS = ["최대레벨", "타이밍", "기능", "난이도", "대상", "사정거리", "침식치", "제한"];
 
-const CHAR_STAT_KEYS = ["등급", "워크스", "나이", "성별", "신장", "체중", "혈액형", "별자리"];
+const CHAR_STAT_KEYS = ["등급", "신드롬", "워크스", "나이", "성별", "신장", "체중", "혈액형", "별자리"];
 const CHAR_NARRATIVE_KEYS = ["출생", "경험", "해후", "각성", "충동", "욕망"];
 const CHAR_IMAGE_BASE = "Image/Character/";
 const AREA_IMAGE_BASE = "Image/Area/";
