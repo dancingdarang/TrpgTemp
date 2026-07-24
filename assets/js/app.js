@@ -124,7 +124,7 @@ function render() {
     expandControls.hidden = true;
     renderSyndromeCards(filtered);
   } else if (state.activeId === "effects") {
-    expandControls.hidden = false;
+    expandControls.hidden = true;
     renderEffectCards(filtered);
   } else if (state.activeId === "characters") {
     chipFilter.hidden = true;
@@ -265,62 +265,79 @@ function renderSyndromeCards(filtered) {
   });
 }
 
+function buildEffectDetail(row) {
+  const detail = document.createElement("div");
+  detail.className = "eff-detail-inner";
+  detail.innerHTML = `
+    <div class="eff-detail-head">
+      <span class="eff-name">${escapeHtml(row["이름"])}</span>
+      <span class="eff-syn-tag">${escapeHtml(row["신드롬"])}</span>
+    </div>
+    <p class="eff-summary">${escapeHtml(row["요약"])}</p>
+  `;
+
+  const statGrid = document.createElement("div");
+  statGrid.className = "eff-stat-grid";
+  EFFECT_STAT_KEYS.forEach((key) => {
+    const box = document.createElement("div");
+    box.className = "eff-stat";
+    box.innerHTML = `
+      <span class="eff-stat-label">${key}</span>
+      <span class="eff-stat-value">${escapeHtml(row[key] || "-")}</span>
+    `;
+    statGrid.appendChild(box);
+  });
+  detail.appendChild(statGrid);
+
+  const rules = document.createElement("p");
+  rules.className = "eff-rules";
+  rules.textContent = row["효과"] ?? "";
+  detail.appendChild(rules);
+
+  return detail;
+}
+
 function renderEffectCards(filtered) {
   dataTable.hidden = true;
   entryList.hidden = false;
   entryList.innerHTML = "";
 
-  filtered.forEach((row) => {
-    const card = document.createElement("article");
-    card.className = "eff-card";
+  const split = document.createElement("div");
+  split.className = "eff-split";
 
-    const head = document.createElement("button");
-    head.type = "button";
-    head.className = "eff-head";
-    head.setAttribute("aria-expanded", "false");
-    head.innerHTML = `
-      <div class="eff-head-top">
-        <span class="eff-name">${escapeHtml(row["이름"])}</span>
-        <span class="eff-syn-tag">${escapeHtml(row["신드롬"])}</span>
-      </div>
-      <p class="eff-summary">${escapeHtml(row["요약"])}</p>
+  const list = document.createElement("div");
+  list.className = "eff-list";
+
+  const detailPane = document.createElement("div");
+  detailPane.className = "eff-detail";
+
+  function selectRow(row, btn) {
+    [...list.children].forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    detailPane.innerHTML = "";
+    detailPane.appendChild(buildEffectDetail(row));
+  }
+
+  filtered.forEach((row, idx) => {
+    const item = document.createElement("button");
+    item.type = "button";
+    item.className = "eff-list-item";
+    item.innerHTML = `
+      <span class="eff-list-name">${escapeHtml(row["이름"])}</span>
+      <span class="eff-list-tag">${escapeHtml(row["신드롬"])}</span>
     `;
-
-    const body = document.createElement("div");
-    body.className = "eff-body";
-
-    const bodyInner = document.createElement("div");
-    bodyInner.className = "eff-body-inner";
-
-    const statGrid = document.createElement("div");
-    statGrid.className = "eff-stat-grid";
-    EFFECT_STAT_KEYS.forEach((key) => {
-      const box = document.createElement("div");
-      box.className = "eff-stat";
-      box.innerHTML = `
-        <span class="eff-stat-label">${key}</span>
-        <span class="eff-stat-value">${escapeHtml(row[key] || "-")}</span>
-      `;
-      statGrid.appendChild(box);
-    });
-
-    const rules = document.createElement("p");
-    rules.className = "eff-rules";
-    rules.textContent = row["효과"] ?? "";
-
-    bodyInner.appendChild(statGrid);
-    bodyInner.appendChild(rules);
-    body.appendChild(bodyInner);
-
-    head.addEventListener("click", () => {
-      const isOpen = card.classList.toggle("open");
-      head.setAttribute("aria-expanded", String(isOpen));
-    });
-
-    card.appendChild(head);
-    card.appendChild(body);
-    entryList.appendChild(card);
+    item.addEventListener("click", () => selectRow(row, item));
+    list.appendChild(item);
+    if (idx === 0) selectRow(row, item);
   });
+
+  if (!filtered.length) {
+    detailPane.innerHTML = `<p class="eff-detail-empty">왼쪽 목록에서 이펙트를 선택하세요.</p>`;
+  }
+
+  split.appendChild(list);
+  split.appendChild(detailPane);
+  entryList.appendChild(split);
 }
 
 function buildCharPortraitEl(row, className) {
