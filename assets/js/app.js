@@ -407,6 +407,29 @@ function buildCharSheet(row) {
   return card;
 }
 
+const charModal = document.getElementById("char-modal");
+const charModalBackdrop = document.getElementById("char-modal-backdrop");
+const charModalClose = document.getElementById("char-modal-close");
+const charModalContent = document.getElementById("char-modal-content");
+
+function openCharModal(row) {
+  charModalContent.innerHTML = "";
+  charModalContent.appendChild(buildCharSheet(row));
+  charModal.hidden = false;
+  requestAnimationFrame(() => charModal.classList.add("char-modal-open"));
+}
+
+function closeCharModal() {
+  charModal.classList.remove("char-modal-open");
+  setTimeout(() => { charModal.hidden = true; }, 200);
+}
+
+charModalBackdrop.addEventListener("click", closeCharModal);
+charModalClose.addEventListener("click", closeCharModal);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !charModal.hidden) closeCharModal();
+});
+
 function renderCharacterCards(filtered) {
   dataTable.hidden = true;
   entryList.hidden = false;
@@ -415,10 +438,7 @@ function renderCharacterCards(filtered) {
   const roster = document.createElement("div");
   roster.className = "char-roster";
 
-  const detail = document.createElement("div");
-  detail.className = "char-detail";
-
-  filtered.forEach((row, idx) => {
+  filtered.forEach((row) => {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "char-roster-btn";
@@ -430,23 +450,12 @@ function renderCharacterCards(filtered) {
 
     btn.appendChild(thumb);
     btn.appendChild(name);
-
-    btn.addEventListener("click", () => {
-      [...roster.children].forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-      detail.innerHTML = "";
-      detail.appendChild(buildCharSheet(row));
-    });
+    btn.addEventListener("click", () => openCharModal(row));
 
     roster.appendChild(btn);
-    if (idx === 0) {
-      btn.classList.add("active");
-      detail.appendChild(buildCharSheet(row));
-    }
   });
 
   entryList.appendChild(roster);
-  entryList.appendChild(detail);
 }
 
 searchInput.addEventListener("input", (e) => {
