@@ -19,7 +19,7 @@ GitHub Pages로 바로 올릴 수 있는 정적 사이트입니다.
 | `data/syndromes.csv` | 신드롬 |
 | `data/effects.csv` | 이펙트 (신드롬별 스킬) |
 | `data/items.csv` | 장비/아이템 |
-| `data/npcs.csv` | 이레귤러 도감 |
+| `data/areas.csv` | 에어리어 |
 | `data/rules.csv` | 규칙 정리 |
 | `data/characters.csv` | 캐릭터 열람 (PC) |
 
@@ -42,6 +42,11 @@ Image/Character/Clara_Hart_Portrait.png
 
 - 파일명이 비어있거나 해당 파일이 없으면 "NO IMAGE" 자리표시자가 대신 표시됩니다.
 - 이미지도 CSV와 마찬가지로 `push_all.bat`으로 올리면 반영됩니다 (용량이 크면 `push_data.bat`이 아니라 `push_all.bat`을 쓰세요 — `push_data.bat`은 `data/` 폴더만 올립니다).
+
+## 2-2. 에어리어 이미지 추가하기
+
+- **월드맵**: `Image/Area/WorldMap.png` 파일 하나만 있으면 [에어리어] 탭 맨 위에 자동으로 크게 표시됩니다. 파일이 없으면 배너 자체가 안 보일 뿐 오류는 나지 않습니다.
+- **개별 에어리어 이미지**: `data/areas.csv`의 `이미지` 열에 파일명을 적고, 그 파일을 `Image/Area/` 폴더에 넣으면 표의 해당 칸에 작은 썸네일로 표시됩니다.
 
 ## 3. 분류(탭) 추가/변경하기
 
@@ -79,6 +84,6 @@ data/
   syndromes.csv
   renegades.csv
   items.csv
-  npcs.csv
+  areas.csv
   rules.csv
 ```

@@ -9,7 +9,7 @@ const CATEGORIES = [
   { id: "syndromes", label: "신드롬",       file: "data/syndromes.csv" },
   { id: "effects",   label: "이펙트",        file: "data/effects.csv" },
   { id: "items",     label: "장비/아이템",   file: "data/items.csv" },
-  { id: "npcs",      label: "이레귤러 도감", file: "data/npcs.csv" },
+  { id: "areas",     label: "에어리어",      file: "data/areas.csv" },
   { id: "rules",     label: "규칙 정리",     file: "data/rules.csv" },
   { id: "characters",label: "캐릭터 열람",   file: "data/characters.csv" },
 ];
@@ -28,6 +28,7 @@ const tableBody = document.getElementById("table-body");
 const dataTable = document.getElementById("data-table");
 const entryList = document.getElementById("entry-list");
 const chipFilter = document.getElementById("chip-filter");
+const areaBanner = document.getElementById("area-banner");
 const expandControls = document.getElementById("expand-controls");
 const expandAllBtn = document.getElementById("expand-all-btn");
 const collapseAllBtn = document.getElementById("collapse-all-btn");
@@ -44,6 +45,7 @@ const EFFECT_STAT_KEYS = ["최대레벨", "타이밍", "기능", "난이도", "�
 const CHAR_STAT_KEYS = ["등급", "워크스", "나이", "성별", "신장", "체중", "혈액형", "별자리"];
 const CHAR_NARRATIVE_KEYS = ["출생", "경험", "해후", "각성", "충동", "욕망"];
 const CHAR_IMAGE_BASE = "Image/Character/";
+const AREA_IMAGE_BASE = "Image/Area/";
 
 function escapeHtml(str) {
   return String(str ?? "")
@@ -114,6 +116,8 @@ function render() {
   if (state.activeId === "effects" && state.synFilter) {
     filtered = filtered.filter((row) => row["신드롬"] === state.synFilter);
   }
+
+  areaBanner.hidden = state.activeId !== "areas";
 
   if (state.activeId === "syndromes") {
     chipFilter.hidden = true;
@@ -198,7 +202,21 @@ function renderTable(filtered) {
     const tr = document.createElement("tr");
     state.headers.forEach((h) => {
       const td = document.createElement("td");
-      td.textContent = row[h] ?? "";
+      if (state.activeId === "areas" && h === "이미지") {
+        const file = (row[h] || "").trim();
+        if (file) {
+          const img = document.createElement("img");
+          img.src = AREA_IMAGE_BASE + file;
+          img.alt = row["이름"] || "";
+          img.className = "table-thumb";
+          img.onerror = () => { td.textContent = "-"; };
+          td.appendChild(img);
+        } else {
+          td.textContent = "-";
+        }
+      } else {
+        td.textContent = row[h] ?? "";
+      }
       tr.appendChild(td);
     });
     tableBody.appendChild(tr);
