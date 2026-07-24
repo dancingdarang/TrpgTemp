@@ -18,7 +18,11 @@ GitHub Pages로 바로 올릴 수 있는 정적 사이트입니다.
 |---|---|
 | `data/syndromes.csv` | 신드롬 |
 | `data/effects.csv` | 이펙트 (신드롬별 스킬) |
-| `data/items.csv` | 장비/아이템 |
+| `data/items.csv` | 장비/아이템 → 일반 |
+| `data/weapons.csv` | 장비/아이템 → 무기 |
+| `data/armor.csv` | 장비/아이템 → 방어구 |
+| `data/vehicles.csv` | 장비/아이템 → 비클 |
+| `data/connections.csv` | 장비/아이템 → 커넥션 |
 | `data/areas.csv` | 에어리어 |
 | `data/rules.csv` | 규칙 정리 |
 | `data/characters.csv` | 캐릭터 열람 (PC) |

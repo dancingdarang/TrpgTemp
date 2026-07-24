@@ -8,7 +8,15 @@
 const CATEGORIES = [
   { id: "syndromes", label: "신드롬",       file: "data/syndromes.csv" },
   { id: "effects",   label: "이펙트",        file: "data/effects.csv" },
-  { id: "items",     label: "장비/아이템",   file: "data/items.csv" },
+  { id: "items",     label: "장비/아이템",
+    subcats: [
+      { id: "general",     label: "일반",   file: "data/items.csv" },
+      { id: "weapons",     label: "무기",   file: "data/weapons.csv" },
+      { id: "armor",       label: "방어구", file: "data/armor.csv" },
+      { id: "vehicles",    label: "비클",   file: "data/vehicles.csv" },
+      { id: "connections", label: "커넥션", file: "data/connections.csv" },
+    ]
+  },
   { id: "areas",     label: "에어리어",      file: "data/areas.csv" },
   { id: "rules",     label: "규칙 정리",     file: "data/rules.csv" },
   { id: "characters",label: "캐릭터 열람",   file: "data/characters.csv" },
@@ -20,6 +28,7 @@ const state = {
   headers: [],
   query: "",
   synFilter: null,
+  itemSub: "general",
 };
 
 const tabNav = document.getElementById("tab-nav");
@@ -28,6 +37,7 @@ const tableBody = document.getElementById("table-body");
 const dataTable = document.getElementById("data-table");
 const entryList = document.getElementById("entry-list");
 const chipFilter = document.getElementById("chip-filter");
+const itemSubtabs = document.getElementById("item-subtabs");
 const areaBanner = document.getElementById("area-banner");
 const expandControls = document.getElementById("expand-controls");
 const expandAllBtn = document.getElementById("expand-all-btn");
@@ -80,12 +90,18 @@ function switchCategory(id) {
 
 function loadCategory(id) {
   const cat = CATEGORIES.find((c) => c.id === id);
+  const sub = cat.subcats ? (cat.subcats.find((s) => s.id === state.itemSub) || cat.subcats[0]) : null;
+  if (sub) state.itemSub = sub.id;
+  const file = sub ? sub.file : cat.file;
+
+  buildItemSubtabs(cat);
+
   statusLine.textContent = "불러오는 중…";
   tableBody.innerHTML = "";
   tableHead.innerHTML = "";
   emptyState.hidden = true;
 
-  Papa.parse(cat.file, {
+  Papa.parse(file, {
     download: true,
     header: true,
     skipEmptyLines: true,
@@ -94,14 +110,38 @@ function loadCategory(id) {
       state.headers = results.meta.fields || [];
       buildChipFilter();
       render();
-      statusLine.textContent = cat.file;
+      statusLine.textContent = file;
     },
     error: () => {
-      statusLine.textContent = `${cat.file} 을(를) 불러오지 못했습니다.`;
+      statusLine.textContent = `${file} 을(를) 불러오지 못했습니다.`;
       tableBody.innerHTML = "";
       recordCount.textContent = "0 FILES";
       emptyState.hidden = false;
     },
+  });
+}
+
+function buildItemSubtabs(cat) {
+  if (!cat.subcats) {
+    itemSubtabs.hidden = true;
+    itemSubtabs.innerHTML = "";
+    return;
+  }
+  itemSubtabs.hidden = false;
+  itemSubtabs.innerHTML = "";
+  cat.subcats.forEach((sub) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "chip" + (sub.id === state.itemSub ? " active" : "");
+    btn.textContent = sub.label;
+    btn.addEventListener("click", () => {
+      if (sub.id === state.itemSub) return;
+      state.itemSub = sub.id;
+      searchInput.value = "";
+      state.query = "";
+      loadCategory("items");
+    });
+    itemSubtabs.appendChild(btn);
   });
 }
 
