@@ -1000,6 +1000,60 @@ tbody tr:hover { background: rgba(107,214,232,0.05); }
 
 
 
+/* ---------- Item cards (일반/무기/방어구/비클/커넥션) ---------- */
+.item-card {
+  border-bottom: 1px solid var(--border);
+  padding: 16px 18px;
+}
+.item-card:last-child { border-bottom: none; }
+
+.item-name {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--cyan);
+  margin-bottom: 10px;
+}
+
+.item-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.item-chip {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  background: var(--surface-alt);
+  background-image: linear-gradient(160deg, rgba(107,214,232,0.05) 0%, transparent 70%);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 4px 9px;
+}
+.item-chip-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.4px;
+  color: var(--label);
+  text-transform: uppercase;
+}
+.item-chip-value {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.item-desc {
+  margin: 10px 0 0;
+  font-family: var(--font-serif);
+  font-size: 14.5px;
+  line-height: 1.8;
+  color: var(--text);
+}
+
 /* ---------- Footer ---------- */
 .site-footer { border-top: 1px solid var(--border); margin-top: 40px; }
 .footer-inner {

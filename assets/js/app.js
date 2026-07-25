@@ -170,6 +170,10 @@ function render() {
     chipFilter.hidden = true;
     expandControls.hidden = true;
     renderCharacterCards(filtered);
+  } else if (state.activeId === "items") {
+    chipFilter.hidden = true;
+    expandControls.hidden = true;
+    renderItemCards(filtered);
   } else {
     chipFilter.hidden = true;
     expandControls.hidden = true;
@@ -513,6 +517,50 @@ function renderCharacterCards(filtered) {
   });
 
   entryList.appendChild(roster);
+}
+
+function renderItemCards(filtered) {
+  dataTable.hidden = true;
+  entryList.hidden = false;
+  entryList.innerHTML = "";
+
+  const nameKey = state.headers[0];
+  const descKey = state.headers.includes("해설") ? "해설" : null;
+  const chipKeys = state.headers.filter((h) => h !== nameKey && h !== descKey);
+
+  filtered.forEach((row) => {
+    const card = document.createElement("article");
+    card.className = "item-card";
+
+    const name = document.createElement("span");
+    name.className = "item-name";
+    name.textContent = row[nameKey] || "";
+    card.appendChild(name);
+
+    const chips = document.createElement("div");
+    chips.className = "item-chips";
+    chipKeys.forEach((key) => {
+      const val = row[key];
+      if (val === undefined || val === "") return;
+      const chip = document.createElement("span");
+      chip.className = "item-chip";
+      chip.innerHTML = `
+        <span class="item-chip-label">${escapeHtml(key)}</span>
+        <span class="item-chip-value">${escapeHtml(val)}</span>
+      `;
+      chips.appendChild(chip);
+    });
+    card.appendChild(chips);
+
+    if (descKey && (row[descKey] || "").trim()) {
+      const desc = document.createElement("p");
+      desc.className = "item-desc";
+      desc.textContent = row[descKey];
+      card.appendChild(desc);
+    }
+
+    entryList.appendChild(card);
+  });
 }
 
 searchInput.addEventListener("input", (e) => {
