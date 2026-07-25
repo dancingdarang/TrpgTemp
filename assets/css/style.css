@@ -1049,19 +1049,34 @@ tbody tr:hover { background: rgba(107,214,232,0.05); }
 .item-price {
   flex-shrink: 0;
   display: flex;
-  align-items: baseline;
-  gap: 3px;
+  align-items: center;
+  gap: 4px;
   border: 1px solid var(--cyan-dim);
   background: var(--cyan-soft);
   border-radius: 2px;
-  padding: 4px 8px;
-  font-family: var(--font-mono);
-  font-size: 12.5px;
-  color: var(--cyan);
-  font-weight: 700;
+  padding: 5px 9px;
   white-space: nowrap;
 }
-.item-price-sep { color: var(--label); font-weight: 400; }
+.item-price-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.2;
+}
+.item-price-label {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.3px;
+  color: var(--label);
+  text-transform: uppercase;
+}
+.item-price-value {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--cyan);
+  font-weight: 700;
+}
+.item-price-sep { color: var(--label); font-weight: 400; align-self: center; }
 
 .item-chips {
   display: flex;

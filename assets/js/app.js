@@ -564,7 +564,14 @@ function renderItemCards(filtered) {
       const price = document.createElement("div");
       price.className = "item-price";
       price.innerHTML = priceKeys
-        .map((k) => `<span class="item-price-value">${escapeHtml(row[k] || "-")}</span>`)
+        .map(
+          (k) => `
+            <span class="item-price-item">
+              <span class="item-price-label">${escapeHtml(k)}</span>
+              <span class="item-price-value">${escapeHtml(row[k] || "-")}</span>
+            </span>
+          `
+        )
         .join('<span class="item-price-sep">/</span>');
       head.appendChild(price);
     }
