@@ -524,18 +524,38 @@ function renderItemCards(filtered) {
   entryList.hidden = false;
   entryList.innerHTML = "";
 
+  const grid = document.createElement("div");
+  grid.className = "item-grid";
+
   const nameKey = state.headers[0];
   const descKey = state.headers.includes("해설") ? "해설" : null;
-  const chipKeys = state.headers.filter((h) => h !== nameKey && h !== descKey);
+  const priceKeys = state.headers.filter((h) => h === "구입가" || h === "상비화" || h === "휴대치");
+  const chipKeys = state.headers.filter(
+    (h) => h !== nameKey && h !== descKey && !priceKeys.includes(h)
+  );
 
   filtered.forEach((row) => {
     const card = document.createElement("article");
     card.className = "item-card";
 
+    const head = document.createElement("div");
+    head.className = "item-card-head";
+
     const name = document.createElement("span");
     name.className = "item-name";
     name.textContent = row[nameKey] || "";
-    card.appendChild(name);
+    head.appendChild(name);
+
+    if (priceKeys.length) {
+      const price = document.createElement("div");
+      price.className = "item-price";
+      price.innerHTML = priceKeys
+        .map((k) => `<span class="item-price-value">${escapeHtml(row[k] || "-")}</span>`)
+        .join('<span class="item-price-sep">/</span>');
+      head.appendChild(price);
+    }
+
+    card.appendChild(head);
 
     const chips = document.createElement("div");
     chips.className = "item-chips";
@@ -559,8 +579,10 @@ function renderItemCards(filtered) {
       card.appendChild(desc);
     }
 
-    entryList.appendChild(card);
+    grid.appendChild(card);
   });
+
+  entryList.appendChild(grid);
 }
 
 searchInput.addEventListener("input", (e) => {
