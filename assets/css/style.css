@@ -1,3 +1,28 @@
+@font-face {
+  font-family: 'KoPub Dotum Pro';
+  src: url('../fonts/KoPubWorld_Dotum_Pro_Light.woff') format('woff');
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'KoPub Dotum Pro';
+  src: url('../fonts/KoPubWorld_Dotum_Pro_Medium.woff') format('woff');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'KoPub Dotum Pro';
+  src: url('../fonts/KoPubWorld_Dotum_Pro_Bold.woff') format('woff');
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'KoPub Batang Pro';
+  src: url('../fonts/KoPubWorld_Batang_Pro_Medium.woff') format('woff');
+  font-weight: 500;
+  font-display: swap;
+}
+
 :root {
   --bg: #04070a;
   --surface: #0a1015;
@@ -11,8 +36,9 @@
   --cyan-soft: rgba(107, 214, 232, 0.1);
   --warn: #ffb454;
   --label: #7fa8b2;
-  --font-display: 'Black Han Sans', sans-serif;
-  --font-body: 'Nanum Gothic Coding', monospace;
+  --font-display: 'KoPub Dotum Pro', sans-serif;
+  --font-body: 'KoPub Dotum Pro', sans-serif;
+  --font-serif: 'KoPub Batang Pro', serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
 
@@ -457,8 +483,9 @@ tbody tr:hover { background: rgba(107,214,232,0.05); }
 .syn-desc {
   margin: 0;
   padding: 0 18px 18px;
-  font-size: 14.5px;
-  line-height: 1.7;
+  font-family: var(--font-serif);
+  font-size: 15px;
+  line-height: 1.8;
   color: var(--text);
 }
 
@@ -670,8 +697,9 @@ tbody tr:hover { background: rgba(107,214,232,0.05); }
   padding: 14px 16px;
   border-left: 2px solid var(--cyan-dim);
   background: rgba(107,214,232,0.03);
-  font-size: 15px;
-  line-height: 1.8;
+  font-family: var(--font-serif);
+  font-size: 15.5px;
+  line-height: 1.85;
   color: var(--text);
 }
 
@@ -937,8 +965,9 @@ tbody tr:hover { background: rgba(107,214,232,0.05); }
 }
 .char-block p {
   margin: 0;
-  font-size: 14px;
-  line-height: 1.75;
+  font-family: var(--font-serif);
+  font-size: 15px;
+  line-height: 1.85;
   color: var(--text);
 }
 
