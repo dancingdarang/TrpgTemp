@@ -530,8 +530,9 @@ function renderItemCards(filtered) {
   const nameKey = state.headers[0];
   const descKey = state.headers.includes("해설") ? "해설" : null;
   const priceKeys = state.headers.filter((h) => h === "구입가" || h === "상비화" || h === "휴대치");
+  const metaKeys = state.headers.filter((h) => h === "종별" || h === "기능");
   const chipKeys = state.headers.filter(
-    (h) => h !== nameKey && h !== descKey && !priceKeys.includes(h)
+    (h) => h !== nameKey && h !== descKey && !priceKeys.includes(h) && !metaKeys.includes(h)
   );
 
   filtered.forEach((row) => {
@@ -541,10 +542,23 @@ function renderItemCards(filtered) {
     const head = document.createElement("div");
     head.className = "item-card-head";
 
+    const titleBox = document.createElement("div");
+    titleBox.className = "item-title-box";
+
     const name = document.createElement("span");
     name.className = "item-name";
     name.textContent = row[nameKey] || "";
-    head.appendChild(name);
+    titleBox.appendChild(name);
+
+    const metaVals = metaKeys.map((k) => row[k]).filter((v) => v && v.trim());
+    if (metaVals.length) {
+      const meta = document.createElement("span");
+      meta.className = "item-meta";
+      meta.textContent = metaVals.join(" · ");
+      titleBox.appendChild(meta);
+    }
+
+    head.appendChild(titleBox);
 
     if (priceKeys.length) {
       const price = document.createElement("div");
