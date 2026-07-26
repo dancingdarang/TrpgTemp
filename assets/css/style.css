@@ -504,6 +504,50 @@ tbody tr:hover { background: rgba(107,214,232,0.05); }
   color: var(--text);
 }
 
+.syn-quote {
+  margin: 0 18px 18px;
+  padding: 14px 18px;
+  border-left: 2px solid var(--cyan-dim);
+  background: rgba(107,214,232,0.04);
+}
+.syn-quote p {
+  margin: 0 0 8px;
+  font-family: var(--font-serif);
+  font-size: 14.5px;
+  font-style: italic;
+  line-height: 1.85;
+  color: var(--text);
+  white-space: pre-line;
+}
+.syn-quote cite {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-style: normal;
+  color: var(--label);
+  text-align: right;
+}
+
+.syn-lore {
+  margin: 0 18px 20px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.syn-lore-title {
+  margin: 0 0 8px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--cyan);
+}
+.syn-lore p {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 14.5px;
+  line-height: 1.85;
+  color: var(--text);
+}
+
 @media (max-width: 560px) {
   .stat-grid { grid-template-columns: repeat(2, 1fr); }
   .syn-name { font-size: 18px; }

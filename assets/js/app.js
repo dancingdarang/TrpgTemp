@@ -305,6 +305,36 @@ function renderSyndromeCards(filtered) {
     card.appendChild(head);
     card.appendChild(statGrid);
     card.appendChild(desc);
+
+    if ((row["인용구"] || "").trim()) {
+      const quote = document.createElement("blockquote");
+      quote.className = "syn-quote";
+      const q = document.createElement("p");
+      q.textContent = row["인용구"];
+      quote.appendChild(q);
+      if ((row["출전"] || "").trim()) {
+        const cite = document.createElement("cite");
+        cite.textContent = `— ${row["출전"]}`;
+        quote.appendChild(cite);
+      }
+      card.appendChild(quote);
+    }
+
+    if ((row["설명"] || "").trim()) {
+      const lore = document.createElement("div");
+      lore.className = "syn-lore";
+      if ((row["설명제목"] || "").trim()) {
+        const loreTitle = document.createElement("h3");
+        loreTitle.className = "syn-lore-title";
+        loreTitle.textContent = row["설명제목"];
+        lore.appendChild(loreTitle);
+      }
+      const loreBody = document.createElement("p");
+      loreBody.textContent = row["설명"];
+      lore.appendChild(loreBody);
+      card.appendChild(lore);
+    }
+
     entryList.appendChild(card);
   });
 }
