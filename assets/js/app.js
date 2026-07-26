@@ -50,7 +50,7 @@ const searchInput = document.getElementById("search-input");
 const STAT_KEYS = ["육체", "감각", "정신", "사회"];
 const STAT_MAX = 3;
 
-const EFFECT_STAT_KEYS = ["최대레벨", "타이밍", "기능", "난이도", "대상", "사정거리", "침식치", "제한"];
+const EFFECT_STAT_KEYS = ["타이밍", "기능", "최대레벨", "난이도", "대상", "사정거리", "침식치", "제한"];
 
 const CHAR_STAT_KEYS = ["등급", "신드롬", "워크스", "나이", "성별", "신장", "체중", "혈액형", "별자리"];
 const CHAR_NARRATIVE_KEYS = ["출생", "경험", "해후", "각성", "충동", "욕망"];
@@ -324,7 +324,7 @@ function buildEffectDetail(row) {
   statGrid.className = "eff-stat-grid";
   EFFECT_STAT_KEYS.forEach((key) => {
     const box = document.createElement("div");
-    box.className = "eff-stat" + (key === "타이밍" ? " eff-stat-wide" : "");
+    box.className = "eff-stat" + (key === "타이밍" || key === "기능" ? " eff-stat-wide" : "");
     box.innerHTML = `
       <span class="eff-stat-label">${key}</span>
       <span class="eff-stat-value">${escapeHtml(row[key] || "-")}</span>
