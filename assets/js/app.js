@@ -324,7 +324,7 @@ function buildEffectDetail(row) {
   statGrid.className = "eff-stat-grid";
   EFFECT_STAT_KEYS.forEach((key) => {
     const box = document.createElement("div");
-    box.className = "eff-stat";
+    box.className = "eff-stat" + (key === "타이밍" ? " eff-stat-wide" : "");
     box.innerHTML = `
       <span class="eff-stat-label">${key}</span>
       <span class="eff-stat-value">${escapeHtml(row[key] || "-")}</span>

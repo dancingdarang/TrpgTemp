@@ -679,8 +679,8 @@ tbody tr:hover { background: rgba(107,214,232,0.05); }
 }
 
 .eff-stat-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
   margin-bottom: 20px;
 }
@@ -693,23 +693,21 @@ tbody tr:hover { background: rgba(107,214,232,0.05); }
   display: flex;
   flex-direction: column;
   gap: 3px;
-  flex: 1 0 auto;
-  min-width: 110px;
+  min-width: 0;
 }
+.eff-stat-wide { grid-column: span 2; }
 .eff-stat-label {
   font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.5px;
   color: var(--label);
   text-transform: uppercase;
-  white-space: nowrap;
 }
 .eff-stat-value {
   font-family: var(--font-mono);
   font-size: 14px;
   color: var(--cyan);
   font-weight: 600;
-  white-space: nowrap;
 }
 
 .eff-rules {
@@ -731,7 +729,7 @@ tbody tr:hover { background: rgba(107,214,232,0.05); }
     border-right: none;
     border-bottom: 1px solid var(--border);
   }
-  .eff-stat { flex-basis: 45%; }
+  .eff-stat-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 
