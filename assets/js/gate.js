@@ -11,7 +11,7 @@ const pwGate = document.getElementById("pw-gate");
 const pwForm = document.getElementById("pw-form");
 const pwInput = document.getElementById("pw-input");
 const pwError = document.getElementById("pw-error");
-const introEl = document.getElementById("intro");
+const introSection = document.getElementById("intro");
 
 // 이전에 맞혔던 적이 있으면 다시 묻지 않음 (이 브라우저에서만)
 if (localStorage.getItem("overedge_unlocked") === "1") {
@@ -32,5 +32,5 @@ pwForm.addEventListener("submit", (e) => {
 
 function unlock() {
   pwGate.hidden = true;
-  introEl.hidden = false;
+  introSection.hidden = false;
 }
