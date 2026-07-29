@@ -13,8 +13,31 @@
 
 <div class="crack-overlay" aria-hidden="true"></div>
 
+<!-- ===================== 접근 코드 입력 화면 ===================== -->
+<section id="pw-gate" class="intro">
+  <div class="term-panel">
+    <div class="term-header">
+      <span class="term-icon" aria-hidden="true">V</span>
+      <span class="term-title">ACCESS_CODE_REQUIRED</span>
+      <span class="term-status-dot" aria-hidden="true"></span>
+    </div>
+    <div class="term-divider"></div>
+
+    <div class="term-log">
+      <span class="log-line">이 아카이브는 접근 코드로 보호되어 있습니다.</span>
+      <span class="log-line">코드를 입력하십시오.</span>
+    </div>
+
+    <form id="pw-form" autocomplete="off">
+      <input type="password" id="pw-input" class="pw-input" placeholder="ACCESS CODE" autocomplete="off">
+      <p class="pw-error" id="pw-error" hidden>코드가 일치하지 않습니다.</p>
+      <button type="submit" class="term-btn">UNLOCK</button>
+    </form>
+  </div>
+</section>
+
 <!-- ===================== 인트로 : 보안 파일 접속 화면 ===================== -->
-<section id="intro" class="intro">
+<section id="intro" class="intro" hidden>
   <div class="term-panel">
     <div class="term-header">
       <span class="term-icon" aria-hidden="true">V</span>
@@ -116,6 +139,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="assets/js/app.js"></script>
+<script src="assets/js/gate.js"></script>
 <script src="assets/js/intro.js"></script>
 </body>
 </html>
