@@ -17,6 +17,7 @@ const CATEGORIES = [
       { id: "connections", label: "커넥션", file: "data/connections.csv" },
     ]
   },
+  { id: "works",     label: "워크스",        file: "data/works.csv" },
   { id: "areas",     label: "에어리어",      file: "data/areas.csv" },
   { id: "rules",     label: "규칙 정리",     file: "data/rules.csv" },
   { id: "characters",label: "캐릭터 열람",   file: "data/characters.csv" },
