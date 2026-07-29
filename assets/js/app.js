@@ -232,16 +232,22 @@ function updateChipActive() {
   });
 }
 
+const HEADER_DISPLAY_OVERRIDES = {
+  works: { 레벨1: "레벨", 레벨2: "레벨", 레벨3: "레벨", 레벨4: "레벨", 레벨5: "레벨" },
+};
+
 function renderTable(filtered) {
   dataTable.hidden = false;
   entryList.hidden = true;
   entryList.innerHTML = "";
 
+  const labelOverrides = HEADER_DISPLAY_OVERRIDES[state.activeId] || {};
+
   tableHead.innerHTML = "";
   const trh = document.createElement("tr");
   state.headers.forEach((h) => {
     const th = document.createElement("th");
-    th.textContent = h;
+    th.textContent = labelOverrides[h] || h;
     trh.appendChild(th);
   });
   tableHead.appendChild(trh);
