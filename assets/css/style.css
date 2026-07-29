@@ -1165,6 +1165,97 @@ tbody tr:hover { background: rgba(107,214,232,0.05); }
   color: var(--text);
 }
 
+/* ---------- Rule groups (규칙 정리) ---------- */
+.rule-group { border-bottom: 1px solid var(--border); }
+.rule-group:last-child { border-bottom: none; }
+
+.rule-group-head {
+  width: 100%;
+  appearance: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 18px;
+  text-align: left;
+  transition: background 0.15s;
+}
+.rule-group-head:hover { background: rgba(107,214,232,0.05); }
+
+.rule-group-name {
+  font-family: var(--font-body);
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--cyan);
+}
+.rule-group-count {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--label);
+}
+.rule-group-chevron {
+  color: var(--cyan);
+  font-size: 13px;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+.rule-group.open .rule-group-chevron { transform: rotate(-180deg); }
+
+.rule-group-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.25s ease;
+}
+.rule-group.open .rule-group-body { grid-template-rows: 1fr; }
+.rule-group-body-inner { overflow: hidden; min-height: 0; }
+
+.rule-item {
+  padding: 4px 18px 18px;
+  border-top: 1px solid var(--border);
+  margin-top: 4px;
+  padding-top: 14px;
+}
+.rule-item:first-child { border-top: none; margin-top: 0; padding: 0 18px 18px; }
+
+.rule-item-title {
+  margin: 0 0 6px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+.rule-item-desc {
+  margin: 0 0 8px;
+  font-family: var(--font-serif);
+  font-size: 14.5px;
+  line-height: 1.8;
+  color: var(--text);
+}
+.rule-item-recovery {
+  margin: 0 0 8px;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.rule-item-recovery-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: var(--cyan);
+  border: 1px solid var(--cyan-dim);
+  border-radius: 2px;
+  padding: 1px 6px;
+  margin-right: 6px;
+}
+.rule-item-page {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--label);
+}
+
 /* ---------- Footer ---------- */
 .site-footer { border-top: 1px solid var(--border); margin-top: 40px; }
 .footer-inner {

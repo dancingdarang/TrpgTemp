@@ -174,6 +174,10 @@ function render() {
     chipFilter.hidden = true;
     expandControls.hidden = true;
     renderItemCards(filtered);
+  } else if (state.activeId === "rules") {
+    chipFilter.hidden = true;
+    expandControls.hidden = true;
+    renderRuleGroups(filtered);
   } else {
     chipFilter.hidden = true;
     expandControls.hidden = true;
@@ -634,6 +638,81 @@ function renderItemCards(filtered) {
   });
 
   entryList.appendChild(grid);
+}
+
+function renderRuleGroups(filtered) {
+  dataTable.hidden = true;
+  entryList.hidden = false;
+  entryList.innerHTML = "";
+
+  const groups = new Map();
+  filtered.forEach((row) => {
+    const groupName = (row["그룹"] || "").trim() || row["항목"];
+    if (!groups.has(groupName)) groups.set(groupName, []);
+    groups.get(groupName).push(row);
+  });
+
+  groups.forEach((items, groupName) => {
+    const isMulti = items.length > 1 || (items[0]["그룹"] || "").trim();
+    const group = document.createElement("article");
+    group.className = "rule-group";
+
+    const head = document.createElement("button");
+    head.type = "button";
+    head.className = "rule-group-head";
+    head.setAttribute("aria-expanded", "false");
+    head.innerHTML = `
+      <span class="rule-group-name">${escapeHtml(groupName)}</span>
+      <span class="rule-group-count">${items.length}개 항목</span>
+      <span class="rule-group-chevron" aria-hidden="true">▾</span>
+    `;
+
+    const body = document.createElement("div");
+    body.className = "rule-group-body";
+    const bodyInner = document.createElement("div");
+    bodyInner.className = "rule-group-body-inner";
+
+    items.forEach((row) => {
+      const item = document.createElement("div");
+      item.className = "rule-item";
+      if (isMulti) {
+        const title = document.createElement("h4");
+        title.className = "rule-item-title";
+        title.textContent = row["항목"];
+        item.appendChild(title);
+      }
+      if ((row["설명"] || "").trim()) {
+        const p = document.createElement("p");
+        p.className = "rule-item-desc";
+        p.textContent = row["설명"];
+        item.appendChild(p);
+      }
+      if ((row["회복"] || "").trim()) {
+        const rec = document.createElement("p");
+        rec.className = "rule-item-recovery";
+        rec.innerHTML = `<span class="rule-item-recovery-label">회복</span> ${escapeHtml(row["회복"])}`;
+        item.appendChild(rec);
+      }
+      if ((row["페이지"] || "").trim()) {
+        const page = document.createElement("span");
+        page.className = "rule-item-page";
+        page.textContent = `p.${row["페이지"]}`;
+        item.appendChild(page);
+      }
+      bodyInner.appendChild(item);
+    });
+
+    body.appendChild(bodyInner);
+
+    head.addEventListener("click", () => {
+      const isOpen = group.classList.toggle("open");
+      head.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    group.appendChild(head);
+    group.appendChild(body);
+    entryList.appendChild(group);
+  });
 }
 
 searchInput.addEventListener("input", (e) => {
